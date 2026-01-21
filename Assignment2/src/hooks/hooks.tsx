@@ -3,20 +3,24 @@ import { useEffect, useState } from "react";
 export default function useFetch(query: string) {
   const [response, setResponse] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    setLoading(false);
-    setError("");
-    try {
-      fetch(query)
-        .then((response) => response.json())
-        .then((data) => setResponse(data))
-        .catch((error) => console.error("Error:", error));
-    } catch (error: any) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    if (!query) return;
+
+    setLoading(true);
+    setError(null);
+
+    fetch(query)
+      .then((res) => res.json())
+      .then((data) => setResponse(data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+      
+  }, [query]);
+  useEffect(() => {
+    console.log("REsponse", response)
+  }, [response])
+
   return { response, loading, error };
 }

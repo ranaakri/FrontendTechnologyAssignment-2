@@ -13,7 +13,9 @@ interface Theme {
 export const ThemeContext = createContext<Theme | null>(null);
 
 export function ThemeProvider({ children }: any) {
-  const [theme, setTheme] = useState<boolean>(false);
+  const [theme, setTheme] = useState<boolean>(() => {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

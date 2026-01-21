@@ -5,19 +5,8 @@ import { ThemeProvider, useTheme } from "./ContextProvider";
 export type Actions = "Items" | "Delete" | "Show Cart" | "Add" | "Toggle Theme";
 
 function ThemeComponent() {
-  const [isDarkMode, setDarkMode] = useState<boolean>(false);
-
-  // const { theme, setTheme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    setDarkMode(mediaQuery);
-  }, []);
-
   return (
-    <ThemeProvider value={{ isDarkMode, setDarkMode }}>
+    <ThemeProvider>
       <ExtraComp />
     </ThemeProvider>
   );
@@ -53,7 +42,7 @@ function ExtraComp() {
             <button
               className="hover:bg-white hover:text-black duration-300 rounded-md p-4"
               onClick={() => {
-                setTheme(!theme)
+                setTheme(theme => !theme)
               }}
               key={index}
             >
