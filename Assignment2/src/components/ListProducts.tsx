@@ -6,7 +6,9 @@ import ProductCard from "./ProductCard";
 export default function ListProducts({ type }: { type: string }) {
   const [products, setProducts] = useState<Product[]>();
   const [search, setSearch] = useState<string>("");
-  // const {loading, error, response} = useFetch(type == "All" ? "https://dummyjson.com/products" : ("https://dummyjson.com/products/category/" + type))
+  // const {loading, error, response} = 
+  // useFetch(type == "All" ? "https://dummyjson.com/products" : ("https://dummyjson.com/products/category/" + type))
+
   useEffect(() => {
     try {
       if (type === "All") {
@@ -23,8 +25,13 @@ export default function ListProducts({ type }: { type: string }) {
     } catch (error: any) {
       console.error(error);
     }
-    // setProducts(response.products);
+    // if(response?.products){
+    //   setProducts(response.products)
+    // }
   }, [type]);
+
+  // if(loading) return <div className="">Loading...</div>
+  // if(error) return <div className="">Error...</div>
 
   useEffect(() => {
     fetch("https://dummyjson.com/products/search?q=" + search)

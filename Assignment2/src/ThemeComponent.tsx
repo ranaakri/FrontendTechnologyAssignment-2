@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ListProducts from "./components/ListProducts";
 import { ThemeProvider, useTheme } from "./ContextProvider";
+import { CartProvider } from "./CartContext";
+import ListCart from "./components/ListCart";
 
 export type Actions = "Items" | "Delete" | "Show Cart" | "Add" | "Toggle Theme";
 
@@ -28,21 +30,20 @@ function ExtraComp() {
       .then((data) => setCatagoryList(data))
       .catch((error) => console.error("Error:", error));
 
-    console.log(theme)
   }, []);
 
   return (
     <>
       <div
         typeof="none"
-        className="flex flex-row px-4 py-1 font-semibold text-white bg-green-500 justify-center items-center"
+        className={`flex flex-row px-4 py-1 font-semibold ${theme ? "bg-black text-white border-black" : "bg-green-500 text-black"} justify-center items-center"`}
       >
         {actions.map((val, index) =>
           val === "Toggle Theme" ? (
             <button
               className="hover:bg-white hover:text-black duration-300 rounded-md p-4"
               onClick={() => {
-                setTheme(theme => !theme)
+                setTheme((theme) => !theme);
               }}
               key={index}
             >
@@ -76,14 +77,19 @@ function ExtraComp() {
           ))}
         </select>
       </div>
-      <Show action={action} type={catagory}></Show>
+      <CartProvider>
+        <Show action={action} type={catagory}></Show>
+      </CartProvider>
     </>
   );
 }
 
 function Show({ action, type }: { action: Actions; type: string }) {
+
   switch (action) {
     case "Items":
       return <ListProducts type={type} />;
+    case "Show Cart":
+      return <ListCart />;
   }
 }
